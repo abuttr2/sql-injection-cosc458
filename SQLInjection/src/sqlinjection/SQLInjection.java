@@ -26,14 +26,22 @@ public class SQLInjection {
     }
        //Method for user login
    public static int login(String username, String password){
+       
        Connection conn = null;
        PreparedStatement pst=null;
        ResultSet rs=null;
        int flag;
        
+       for(int i = 0; i< username.length(); i++){
+           if(username.charAt(i)==('\'')){
+               JOptionPane.showMessageDialog(null, "The inpute has been waved due to SQL Injection risks!","Access Denied",JOptionPane.ERROR_MESSAGE); 
+               return 0;
+           }
+       }
+       
         try{
            conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-           String Sql = "Select * from username where username = '" + username + "' AND password = '" + password + "'";
+           String Sql = "Select * from username where password = '" + password + "' AND username = '" + username + "'";
            
            
            System.out.println("Connected!");
